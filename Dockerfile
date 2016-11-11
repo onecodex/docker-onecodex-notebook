@@ -1,4 +1,4 @@
-FROM quay.io/refgenomics/docker-scipy-notebook:v0.1.0
+FROM quay.io/refgenomics/docker-scipy-notebook:v0.1.1
 MAINTAINER Nick <nick@onecodex.com>
 
 # Add jessie-backports repository, install bwa 0.7.13 and samtools 1.3.1
