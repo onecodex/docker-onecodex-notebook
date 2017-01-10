@@ -15,8 +15,8 @@ RUN pip2 install --no-cache awscli==1.10.58 biopython==1.68 seaborn==0.7.1
 RUN pip3 install --no-cache awscli==1.10.58 biopython==1.68 seaborn==0.7.1
 
 # Install One Codex Python lib
-RUN pip2 install --no-cache onecodex==0.2.0a1
-RUN pip3 install --no-cache onecodex==0.2.0a1
+RUN pip2 install --no-cache onecodex==0.2.0
+RUN pip3 install --no-cache onecodex==0.2.0
 
 # Run as unprivileged user 1000
 USER 1000
