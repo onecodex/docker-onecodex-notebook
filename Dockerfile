@@ -8,6 +8,13 @@ RUN echo "deb http://ftp.debian.org/debian jessie-backports main" > /etc/apt/sou
     && apt-get -t jessie-backports install -y "samtools" \
     && apt-get -t jessie-backports install -y "bwa" \
     && apt-get clean
+
+# Add assets
+RUN mkdir /opt/onecodex/
+ADD install/* /opt/onecodex/
+RUN chmod +x /opt/onecodex/notebook_report.py && \
+    ln -s /opt/onecodex/notebook_report.py /usr/local/bin/notebook_report.py
+
 USER 1000
 
 # Update pip
