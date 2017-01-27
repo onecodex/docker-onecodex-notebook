@@ -123,7 +123,7 @@
 
 % Display raw cell types as latex for trusted inputs
 ((* block unknowncell *))
-  ((* if nb.metadata['vars']['trusted'] == True: *))
+  ((* if nb.metadata.get('vars', {})['trusted'] == True: *))
     ((( cell.source )))
   ((* endif *))
 ((* endblock unknowncell *))
