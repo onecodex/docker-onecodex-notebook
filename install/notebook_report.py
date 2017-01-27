@@ -18,7 +18,7 @@ if os.path.exists('/share/'):
 try:
     notebook_path = sys.argv[1]
 except IndexError:
-    notebook_path = PATH_PREFIX + 'notebook.ipynb'
+    notebook_path = os.path.abspath(os.curdir) + 'notebook.ipynb'
 with open(notebook_path, 'r') as f:
     notebook = nbformat.read(f, as_version=4)
 
@@ -27,7 +27,10 @@ executor.preprocess(notebook, {})
 
 # Set up the export config
 c = Config()
-c.LatexExporter.template_file = PATH_PREFIX + 'notebook_template.tplx'
+if os.path.exists('/share/notebook_template.tplx'):
+    c.LatexExporter.template_file = '/share/notebook_template.tplx'
+else:
+    c.LatexExporter.template_file = '/opt/onecodex/notebook_template.tplx'
 
 notebook.metadata['vars'] = {
     'trusted': True,
