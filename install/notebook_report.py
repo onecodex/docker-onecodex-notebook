@@ -18,7 +18,7 @@ if os.path.exists('/share/'):
 try:
     notebook_path = sys.argv[1]
 except IndexError:
-    notebook_path = os.path.abspath(os.curdir) + 'notebook.ipynb'
+    notebook_path = os.path.join(os.path.abspath(os.curdir), 'notebook.ipynb')
 with open(notebook_path, 'r') as f:
     notebook = nbformat.read(f, as_version=4)
 
