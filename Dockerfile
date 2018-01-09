@@ -29,7 +29,7 @@ RUN pip install jupyter_contrib_nbextensions && \
 RUN pip install --no-cache awscli==1.10.58
 
 # Install One Codex Python lib
-RUN pip install --no-cache onecodex[all]==0.2.9
+RUN pip install --no-cache onecodex[all]==0.2.10
 
 # Run as unprivileged user 1000
 USER 1000
