@@ -30,6 +30,7 @@
   \usepackage{fancyhdr}
   \usepackage{colortbl}
   \usepackage{multirow}
+  \usepackage{tabularx}
   \pagestyle{fancy}
   ((( super() )))
 ((* endblock packages *))
@@ -105,7 +106,7 @@
 % make a title block for the first page
 ((* block title *))
   ((*- if nb.metadata["title"]: -*))
-    \title{((( nb.metadata["title"] )))}
+    \title{((( nb.metadata["title"] )))\vspace{-8ex}}
   ((*- endif *))
   ((*- if nb.metadata["author"]: -*))
     \author{((( nb.metadata["author"] )))}
