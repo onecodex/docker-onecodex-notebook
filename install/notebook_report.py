@@ -3,9 +3,10 @@ import os
 import sys
 
 import nbformat
-from nbconvert.exporters import export, PDFExporter
+from nbconvert.exporters import export, HTMLExporter
 from nbconvert.preprocessors import ExecutePreprocessor
 from traitlets.config import Config
+from weasyprint import HTML
 
 # For some execution environments, set the path to be the "share" directory;
 # otherwise the current dir
@@ -27,10 +28,10 @@ executor.preprocess(notebook, {})
 
 # Set up the export config
 c = Config()
-if os.path.exists('/share/notebook_template.tplx'):
-    c.LatexExporter.template_file = '/share/notebook_template.tplx'
+if os.path.exists('/share/notebook_template.tpl'):
+    c.HTMLExporter.template_file = '/share/notebook_template.tpl'
 else:
-    c.LatexExporter.template_file = '/opt/onecodex/notebook_template.tplx'
+    c.HTMLExporter.template_file = '/opt/onecodex/notebook_template.tpl'
 
 notebook.metadata['vars'] = {
     'trusted': True,
@@ -40,8 +41,7 @@ notebook.metadata['vars'] = {
 }
 
 # Export the notebook as a pdf
-exporter = PDFExporter(config=c)
+exporter = HTMLExporter(config=c)
 output, _ = export(exporter, notebook)
 out_filename = os.environ.get('ONE_CODEX_REPORT_FILENAME', 'notebook').rstrip('.pdf') + '.pdf'
-with open(out_filename, 'wb') as f:
-    f.write(output)
+HTML(string=output).write_pdf(out_filename)
