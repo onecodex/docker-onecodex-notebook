@@ -7,6 +7,7 @@ RUN echo "deb http://ftp.debian.org/debian jessie-backports main" > /etc/apt/sou
     && apt-get -y update \
     && apt-get -t jessie-backports install -y "samtools" \
     && apt-get -t jessie-backports install -y "bwa" \
+    && apt-get -t jessie-backports install -y libffi-dev libcairo2-dev libpango1.0-dev  \
     && apt-get clean
 
 # Add assets
@@ -26,7 +27,7 @@ RUN pip install jupyter_contrib_nbextensions && \
     jupyter nbextension enable python-markdown/main
 
 # Install Python dependencies (Python 3 only)
-RUN pip install --no-cache awscli==1.10.58
+RUN pip install --no-cache awscli==1.10.58 weasyprint==0.42.3
 
 # Install One Codex Python lib
 RUN pip install --no-cache onecodex[all]==0.2.11
