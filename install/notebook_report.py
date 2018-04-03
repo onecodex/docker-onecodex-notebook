@@ -39,6 +39,10 @@ notebook.metadata['vars'] = {
     'ONE_CODEX_REPORT_UUID': os.environ.get('ONE_CODEX_REPORT_UUID', ''),
 }
 
+title = os.environ.get('ONE_CODEX_REPORT_TITLE', False)
+if title:
+    notebook.metadata['title'] = title
+
 # Export the notebook as a pdf
 exporter = PDFExporter(config=c)
 output, _ = export(exporter, notebook)
