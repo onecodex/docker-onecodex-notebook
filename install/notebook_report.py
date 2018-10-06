@@ -6,7 +6,7 @@ import nbformat
 from nbconvert.exporters import export, HTMLExporter
 from nbconvert.preprocessors import ExecutePreprocessor
 from traitlets.config import Config
-from weasyprint import HTML
+from weasyprint import CSS, HTML
 
 # For some execution environments, set the path to be the "share" directory;
 # otherwise the current dir
@@ -22,6 +22,8 @@ except IndexError:
     notebook_path = os.path.join(os.path.abspath(os.curdir), 'notebook.ipynb')
 with open(notebook_path, 'r') as f:
     notebook = nbformat.read(f, as_version=4)
+
+os.environ['SUPPRESS_WARNINGS'] = 'True'
 
 executor = ExecutePreprocessor(timeout=int(os.environ.get('REPORT_TIMEOUT', 14400)))
 executor.preprocess(notebook, {})
@@ -48,4 +50,6 @@ if title:
 exporter = HTMLExporter(config=c)
 output, _ = export(exporter, notebook)
 out_filename = os.environ.get('ONE_CODEX_REPORT_FILENAME', 'notebook').rstrip('.pdf') + '.pdf'
-HTML(string=output).write_pdf(out_filename)
+with open(out_filename.replace('.pdf', '.html'), 'w') as f:
+    f.write(output)
+HTML(string=output, base_url='file:///share/').write_pdf(out_filename, stylesheets=[CSS('custom.css')])

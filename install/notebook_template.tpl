@@ -1,8 +1,10 @@
 {%- extends 'full.tpl' -%}
 
-{%- block header -%}
-  {{ super() }}
-{%- endblock header -%}
+{%- block html_head -%}
+<meta charset="utf-8" />
+{% set nb_title = nb.metadata.get('title', '') or resources['metadata']['name'] %}
+<title>{{nb_title}}</title>
+{%- endblock html_head -%}
 
 {% block output_area_prompt %}
 {% endblock output_area_prompt %}
