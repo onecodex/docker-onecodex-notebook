@@ -67,11 +67,10 @@ def cli(notebook_path, html):
     if html:
         with open(out_filename.replace('.pdf', '.html'), 'w') as f:
             f.write(output)
-        if os.path.exists('/share/custom.css'):
-            base_path = 'file:///share/'
-        else:
-            base_path = 'file:///opt/'
-        HTML(string=output, base_url=base_path).write_pdf(out_filename, stylesheets=[CSS('custom.css')])
+        css_path = '/share/custom.css'
+        if not os.path.exists(css_path):
+            css_path = '/opt/onecodex/custom.css'
+        HTML(string=output, base_url='file:///share/').write_pdf(out_filename, stylesheets=[CSS(css_path)])
     else:
         with open(out_filename, 'wb') as f:
             f.write(output)
