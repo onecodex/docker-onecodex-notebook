@@ -27,7 +27,7 @@ RUN pip install jupyter_contrib_nbextensions && \
     jupyter nbextension enable python-markdown/main
 
 # Install Python dependencies (Python 3 only)
-RUN pip install --no-cache awscli==1.10.58 weasyprint==0.42.3
+RUN pip install --no-cache awscli==1.10.58 weasyprint==0.42.3 click
 
 # Install One Codex Python lib
 RUN pip install --no-cache onecodex[all]==0.2.11
