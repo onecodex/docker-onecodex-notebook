@@ -4,6 +4,8 @@ import click
 import os
 import sys
 
+os.environ['OCX_NBCONVERT'] = 'True'
+
 import nbformat
 from nbconvert.exporters import export, HTMLExporter, PDFExporter
 from nbconvert.preprocessors import ExecutePreprocessor
