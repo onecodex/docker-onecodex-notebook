@@ -5,7 +5,7 @@
 
 FROM python:3.6.6-slim-stretch
 
-MAINTAINER Nick Greenfield <nick@onecodex.com>
+LABEL maintainer="Nick Greenfield <nick@onecodex.com>"
 
 USER root
 
@@ -36,11 +36,11 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
-# Install Tini
-RUN wget --quiet https://github.com/krallin/tini/releases/download/v0.9.0/tini && \
-    echo "faafbfb5b079303691a939a747d7f60591f2143164093727e870b289a44d9872 *tini" | sha256sum -c - && \
-    mv tini /usr/local/bin/tini && \
-    chmod +x /usr/local/bin/tini
+# Add Tini
+ENV TINI_VERSION v0.18.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/local/bin/tini
+RUN chmod +x /usr/local/bin/tini \
+    && echo "12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855 /usr/local/bin/tini" | sha256sum -c -
 
 # Configure environment
 ENV SHELL /bin/bash
@@ -71,34 +71,33 @@ RUN pip install numpy==1.15.4
 # Install Python 3 packages
 RUN pip install \
     awscli==1.16.81 \
-    beautifulsoup4==4.6 \
-    biopython==1.70 \
-    bokeh==0.12 \
-    certifi \
-    click \
-    cloudpickle==0.2.2 \
-    cython==0.26 \
-    dill==0.2 \
-    h5py==2.7.0 \
-    ipywidgets==5.2.2 \
+    # beautifulsoup4==4.6 \
+    biopython==1.72 \
+    bokeh==1.0.3 \
+    certifi==2018.10.15 \
+    click==7.0 \
+    # cloudpickle==0.2.2 \
+    cython==0.29.2 \
+    # dill==0.2 \
+    # h5py==2.9.0 \
+    ipywidgets==7.4.2 \
     jupyterthemes==0.20.0 \
-    jupyter_contrib_nbextensions==0.5.0 \
-    pandas==0.20.3 \
-    matplotlib==2.0.0 \
-    numba==0.34.0 \
-    numexpr==2.6.0 \
-    patsy==0.4.0 \
-# do we need skimage? it's rather large
-#    scikit-image==0.13.0 \
+    jupyter_contrib_nbextensions==0.5.1 \
+    pandas==0.23.0 \
+    matplotlib==3.0.2 \
+    numba==0.42.0 \
+    numexpr==2.6.9 \
+    # patsy==0.4.0 \
+    # scikit-image==0.13.0 \
     scikit-learn==0.19.0 \
-    scipy==0.19.0 \
-    seaborn==0.8 \
+    scipy==1.1.0 \
+    seaborn==0.9.0 \
     selenium==3.141.0 \
-    sqlalchemy==1.1.0 \
-    statsmodels==0.8.0 \
-    sympy==1.1 \
-    vincent==0.4.0 \
-    weasyprint==0.42.3 \
+    # sqlalchemy==1.1.0 \
+    # statsmodels==0.8.0 \
+    # sympy==1.1 \
+    # vincent==0.4.0 \
+    weasyprint==44 \
     xlrd==1.2.0
 
 # Jupyter notebook should have already been installed above, but here we force a particular version
