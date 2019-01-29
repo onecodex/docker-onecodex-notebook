@@ -161,9 +161,9 @@ CMD ["jupyter", "notebook"]
 
 # Add assets
 RUN mkdir /opt/onecodex/
-COPY install/* /opt/onecodex/
-RUN chmod +x /opt/onecodex/notebook_report.py && \
-    ln -s /opt/onecodex/notebook_report.py /usr/local/bin/notebook_report.py
+# COPY install/* /opt/onecodex/
+COPY notebook/notebook.html /usr/local/lib/python3.6/site-packages/notebook/templates
+COPY notebook/override.css /usr/local/lib/python3.6/site-packages/notebook/static/notebook/css
 
 # Add local files
 COPY notebook/jupyter_notebook_config.py /home/$NB_USER/.jupyter/
