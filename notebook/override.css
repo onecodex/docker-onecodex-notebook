@@ -5,6 +5,46 @@ a hack to deal with our current css styles and no new styling should be added in
 #ipython-main-app {
     position: relative;
 }
+
 #header-container {                                                                                     
     display: none !important;                                                                              
+}
+
+#notebook {
+	background-color: rgb(237, 236, 231);
+}
+
+span.checkpoint_status {
+	color: #777;
+}
+
+span.autosave_status {
+	color: #777;
+}
+
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #06749F;
+}
+
+.edit_mode div.cell.selected {
+  border-color: #2DB998;
+}
+
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #2DB998;
 }
