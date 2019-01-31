@@ -171,7 +171,7 @@ COPY notebook/token_notebook.py /usr/local/bin/token_notebook.py
 RUN chmod +x /usr/local/bin/token_notebook.py
 
 # Install One Codex Python lib
-RUN pip install --no-cache onecodex[all]==0.2.14
+RUN pip install --no-cache onecodex[all]==0.3.0
 
 # Install forked ipyvega that opens links in a new window/tab
 # See https://github.com/onecodex/onecodex/issues/137
