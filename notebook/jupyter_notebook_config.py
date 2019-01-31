@@ -12,6 +12,20 @@ c.NotebookApp.ip = '0.0.0.0'
 c.NotebookApp.port = 8888
 c.NotebookApp.open_browser = False
 
+# Prefer SVG over JavaScript when exporting notebooks as HTML
+c.NbConvertBase.display_data_priority = [
+    'application/vnd.jupyter.widget-state+json',
+    'application/vnd.jupyter.widget-view+json',
+    'image/svg+xml',
+    'application/javascript',
+    'text/html',
+    'text/markdown',
+    'text/latex',
+    'image/png',
+    'image/jpeg',
+    'text/plain'
+]
+
 # Set a certificate if USE_HTTPS is set to any value
 if 'USE_HTTPS' in os.environ:
     if not os.path.isfile(PEM_FILE):
