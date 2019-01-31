@@ -167,6 +167,7 @@ COPY notebook/override.css /usr/local/lib/python3.6/site-packages/notebook/stati
 
 # Add local files
 COPY notebook/jupyter_notebook_config.py /home/$NB_USER/.jupyter/
+COPY notebook/jupyter_nbconvert_config.py /home/$NB_USER/.jupyter/
 COPY notebook/token_notebook.py /usr/local/bin/token_notebook.py
 RUN chmod +x /usr/local/bin/token_notebook.py
 
