@@ -174,10 +174,6 @@ RUN chmod +x /usr/local/bin/token_notebook.py
 # Install One Codex Python lib
 RUN pip install --no-cache onecodex[all]==0.3.1
 
-# Install forked ipyvega that opens links in a new window/tab
-# See https://github.com/onecodex/onecodex/issues/137
-RUN pip install -U git+https://github.com/onecodex/ipyvega.git@target-blank
-
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
 RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+w,g+w /home/$NB_USER
