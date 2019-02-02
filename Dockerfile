@@ -179,7 +179,8 @@ COPY notebook/token_notebook.py /usr/local/bin/token_notebook.py
 RUN chmod +x /usr/local/bin/token_notebook.py
 
 # Install One Codex Python lib
-RUN pip install --no-cache onecodex[all]==0.3.1
+#RUN pip install --no-cache onecodex[all]==0.4.0
+RUN git clone https://github.com/onecodex/onecodex && cd onecodex && pip install .[all]
 
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
