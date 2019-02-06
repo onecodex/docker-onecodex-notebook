@@ -13,23 +13,23 @@ USER root
 # features (e.g., download as all possible file formats)
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -yq --no-install-recommends \
-    wget \
+    apt-transport-https \
+    build-essential \
     bzip2 \
     ca-certificates \
-    gnupg \
-    apt-transport-https \
-    sudo \
-    locales \
-    git \
-    vim \
-    build-essential \
-    python-dev \
-    unzip \
-    fonts-dejavu \
-    gfortran \
-    gcc \
     cmake \
     curl \
+    fonts-dejavu \
+    gcc \
+    gfortran \
+    git \
+    gnupg \
+    locales \
+    python-dev \
+    sudo \
+    unzip \
+    vim \
+    wget \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -127,9 +127,6 @@ RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - 
     && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 RUN apt-get update && apt-get install -yq --no-install-recommends google-chrome-stable chromedriver
 
-# Dependencies for weasyprint
-RUN apt-get update && apt-get install -yq --no-install-recommends libffi6 libcairo2 libpango1.0
-
 # Install R and some basic packages
 RUN apt-get update && apt-get install -yq --no-install-recommends \
     r-base \
@@ -151,6 +148,17 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
 # This lets us select R from inside the notebook
 RUN echo "install.packages(\"IRkernel\", repos=\"https://cran.rstudio.com\")" | R --no-save
 RUN echo "IRkernel::installspec()" | R --no-save
+
+# Dependencies for weasyprint. Known bugs on libcairo < 1.15.4. Must pull from debian-buster to get 1.16
+RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -yq --no-install-recommends \
+    libffi6 \
+    libcairo2 \
+    libpango1.0.0 \
+    fonts-uralic \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure container startup
 EXPOSE 8888
