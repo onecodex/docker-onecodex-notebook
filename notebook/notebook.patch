@@ -1,0 +1,12 @@
+--- nbconvert/handlers.py	2019-02-07 16:40:43.000000000 -0800
++++ nbconvert/handlers.py	2019-02-07 16:40:32.000000000 -0800
+@@ -116,7 +116,8 @@
+         resource_dict = {
+             "metadata": {
+                 "name": nb_title,
+-                "modified_date": mod_date
++                "modified_date": mod_date,
++                "one_codex_doc_portal_filename": self.get_argument('one_codex_doc_portal_filename', None)
+             },
+             "config_dir": self.application.settings['config_dir']
+         }

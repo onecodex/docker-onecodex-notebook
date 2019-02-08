@@ -172,11 +172,17 @@ RUN mkdir /opt/onecodex/
 # COPY install/* /opt/onecodex/
 COPY notebook/notebook.html /usr/local/lib/python3.6/site-packages/notebook/templates
 COPY notebook/override.css /usr/local/lib/python3.6/site-packages/notebook/static/notebook/css
+COPY notebook/onecodex.js /home/$NB_USER/.jupyter/custom/
 
 # Add local files
 COPY notebook/jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 COPY notebook/token_notebook.py /usr/local/bin/token_notebook.py
 RUN chmod +x /usr/local/bin/token_notebook.py
+
+# Add patch to jupyter notebook for export to One Codex document portal
+COPY notebook/notebook.patch /usr/local/lib/python3.6/site-packages/notebook
+RUN cd /usr/local/lib/python3.6/site-packages/notebook \
+    && patch -p0 < notebook.patch
 
 # Install One Codex Python lib
 #RUN pip install --no-cache onecodex[all]==0.4.0
