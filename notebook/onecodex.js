@@ -4,7 +4,7 @@ define([
 ], function(utils, dialog) {
   return {
     ExportModal: (default_file_name) => {
-      const ONE_CODEX_DOCS_URL = 'http://localhost:5000/documents';
+      const ONE_CODEX_DOCS_URL = 'https://app.onecodex.com/documents';
 
       var formGroup = document.createElement('div');
       formGroup.className = 'form-group';
@@ -59,8 +59,9 @@ define([
               // disable elements while awaiting response
               document.getElementById('pdf-report-filename').readOnly = true;
               document.getElementById('one-codex-save-button').disabled = true;
+              document.getElementById('one-codex-run-all-save-button').disabled = true;
               alertBox.innerHTML = '<img src="https://app.onecodex.com/images/site-images/spinner.gif" ' +
-                'width="25px">&nbsp;&nbsp; Preparing report and uploading. This may take a minute.';
+                'width="25px">&nbsp;&nbsp; Rendering notebook and uploading. Usually takes less than a minute.';
               alertBox.className = 'alert alert-info';
 
               var xhr = new XMLHttpRequest();
@@ -71,6 +72,7 @@ define([
                     alertBox.className = 'alert alert-danger';
                     document.getElementById('pdf-report-filename').readOnly = false;
                     document.getElementById('one-codex-save-button').disabled = false;
+                    document.getElementById('one-codex-run-all-save-button').disabled = false;
                 } else {
                   try {
                     var resp_json = JSON.parse(xhr.responseText);
@@ -86,16 +88,43 @@ define([
                     alertBox.className = 'alert alert-danger';
                     document.getElementById('pdf-report-filename').readOnly = false;
                     document.getElementById('one-codex-save-button').disabled = false;
+                    document.getElementById('one-codex-run-all-save-button').disabled = false;
                   } else {
                     alertBox.innerHTML = 'Export successful! View the report here: <a href="' + 
                       ONE_CODEX_DOCS_URL + '" target="_blank" class="alert-link">Documents Portal</a>';
                     alertBox.className = 'alert alert-success';
                     document.getElementById('one-codex-save-button').className = 'hidden';
+                    document.getElementById('one-codex-run-all-save-button').className = 'hidden';
                     document.getElementById('one-codex-cancel-button').innerHTML = 'Return to Notebook';
                   }
                 }
               };
               xhr.send();
+            }
+          },
+          'Run All And Save': {
+            'id': 'one-codex-run-all-save-button',
+            'class': 'btn-secondary',
+            'click': () => {
+              // disable elements while awaiting response
+              document.getElementById('pdf-report-filename').readOnly = true;
+              document.getElementById('one-codex-save-button').disabled = true;
+              document.getElementById('one-codex-run-all-save-button').disabled = true;
+              alertBox.innerHTML = '<img src="https://app.onecodex.com/images/site-images/spinner.gif" ' +
+                'width="25px">&nbsp;&nbsp; Executing cells in notebook. Some notebooks may take a few minutes.';
+              alertBox.className = 'alert alert-info';
+
+              IPython.notebook.clear_all_output();
+              IPython.notebook.execute_all_cells();
+
+              let wait_for_ipython = setInterval(() => {
+                if (IPython.notebook.kernel_busy === false) {
+                  clearInterval(wait_for_ipython);
+                  document.getElementById('one-codex-save-button').disabled = false;
+                  document.getElementById('one-codex-save-button').click();
+                  document.getElementById('one-codex-save-button').disabled = true;
+                }
+              }, 1000);
             }
           },
           'Cancel': {
