@@ -173,6 +173,7 @@ RUN mkdir /opt/onecodex/
 COPY notebook/notebook.html /usr/local/lib/python3.6/site-packages/notebook/templates
 COPY notebook/override.css /usr/local/lib/python3.6/site-packages/notebook/static/notebook/css
 COPY notebook/onecodex.js /home/$NB_USER/.jupyter/custom/
+COPY notebook/one-codex-spinner.svg /home/$NB_USER/.jupyter/custom/
 
 # Add local files
 COPY notebook/jupyter_notebook_config.py /home/$NB_USER/.jupyter/

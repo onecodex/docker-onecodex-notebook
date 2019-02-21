@@ -1,0 +1,154 @@
+<svg id="loading-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112">
+  <style type="text/css">
+    g.logo {
+      -webkit-transform: scale(0.75);
+      transform: scale(0.75);
+    }
+    #loading-icon-svg {
+      width: 112px;
+      height: 112px;
+    }
+    #loading-icon-svg path {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      stroke-width: 13px;
+      fill-opacity: 0;
+      fill-rule: nonzero;
+      stroke-linejoin: miter;
+      stroke-linecap: square;
+    }
+    #loading-icon-svg path.background-logo-path {
+      stroke-dashoffset: 0;
+      stroke-opacity: 0.8;
+    }
+    #background-half-logo1 {
+      stroke: #f7f6ef;
+    }
+    #background-half-logo2 {
+      stroke: #f3f3ee;
+    }
+    #half-logo1 {
+      stroke: #bbd8d3;
+      -webkit-animation: 6s linear infinite normal loading-animation-1;
+      -moz-animation: 6s linear infinite normal loading-animation-1;
+      animation: 6s linear infinite normal loading-animation-1;
+    }
+    #half-logo2 {
+      stroke: #9fb9b9;
+      -webkit-animation: 6s linear infinite normal loading-animation-2;
+      -moz-animation: 6s linear infinite normal loading-animation-2;
+      animation: 6s linear infinite normal loading-animation-2;
+    }
+    @keyframes loading-animation-1 {
+      0% {
+        stroke-dashoffset: 300;
+      }
+      25% {
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dashoffset: 0;
+      }
+      75% {
+        stroke-dashoffset: -300;
+      }
+      100% {
+        stroke-dashoffset: -300;
+      }
+    }
+    @keyframes loading-animation-2 {
+      0% {
+        stroke-dashoffset: 300;
+      }
+      23% {
+        stroke-dashoffset: 300;
+      }
+      50% {
+        stroke-dashoffset: 0;
+      }
+      73% {
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: -300;
+      }
+    }
+    @-moz-keyframes loading-animation-1 {
+      0% {
+        stroke-dashoffset: 300;
+      }
+      25% {
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dashoffset: 0;
+      }
+      75% {
+        stroke-dashoffset: -300;
+      }
+      100% {
+        stroke-dashoffset: -300;
+      }
+    }
+    @-moz-keyframes loading-animation-2 {
+      0% {
+        stroke-dashoffset: 300;
+      }
+      23% {
+        stroke-dashoffset: 300;
+      }
+      50% {
+        stroke-dashoffset: 0;
+      }
+      73% {
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: -300;
+      }
+    }
+    @-webkit-keyframes loading-animation-1 {
+      0% {
+        stroke-dashoffset: 300;
+      }
+      25% {
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dashoffset: 0;
+      }
+      75% {
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: 300;
+      }
+    }
+    @-webkit-keyframes loading-animation-2 {
+      0% {
+        stroke-dashoffset: 300;
+      }
+      23% {
+        stroke-dashoffset: 300;
+      }
+      50% {
+        stroke-dashoffset: 0;
+      }
+      77% {
+        stroke-dashoffset: 300;
+      }
+      100% {
+        stroke-dashoffset: 300;
+      }
+    }
+  </style>
+  <g class="logo">
+    <clipPath id="logo-clip">
+      <path d="m 75,60 v -60 h 55 v 85 h -55 v 65 h -60 v -80 h 50 Z"></path>
+    </clipPath>
+    <path id="background-half-logo2" transform="translate(0, 150)scale(1,-1)" d="m 75,50 l 45,-33 v 26 l -90,64 v 26 l 45,-33" clip-path="url(#logo-clip)" class="background-logo-path"></path>
+    <path id="background-half-logo1" d="m 75,50 l 45,-33 v 26 l -90,64 v 26 l 45,-33" clip-path="url(#logo-clip)" class="background-logo-path"></path>
+    <path id="half-logo2" transform="translate(0, 150)scale(1,-1)" d="m 75,50 l 45,-33 v 26 l -90,64 v 26 l 45,-33" clip-path="url(#logo-clip)"></path>
+    <path id="half-logo1" d="m 75,50 l 45,-33 v 26 l -90,64 v 26 l 45,-33" clip-path="url(#logo-clip)"></path>
+  </g>
+</svg>

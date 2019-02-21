@@ -5,6 +5,13 @@ define([
   return {
     ExportModal: (default_file_name) => {
       const ONE_CODEX_DOCS_URL = 'https://app.onecodex.com/documents';
+      const SPINNER_SVG_URL = '/custom/one-codex-spinner.svg';
+
+      var makeSpinnerSVG = (alertMsg) => {
+        return `<table width="100%"><tr><td width="10%" style="padding: 5px">
+                <object data="${SPINNER_SVG_URL}" type="image/svg+xml" width="50px" height="50px" />
+                </td><td width="90%">${alertMsg}</td></tr></table>`;
+      };
 
       var formGroup = document.createElement('div');
       formGroup.className = 'form-group';
@@ -60,46 +67,48 @@ define([
               document.getElementById('pdf-report-filename').readOnly = true;
               document.getElementById('one-codex-save-button').disabled = true;
               document.getElementById('one-codex-run-all-save-button').disabled = true;
-              alertBox.innerHTML = '<img src="https://app.onecodex.com/images/site-images/spinner.gif" ' +
-                'width="25px">&nbsp;&nbsp; Rendering notebook and uploading. Usually takes less than a minute.';
-              alertBox.className = 'alert alert-info';
+              alertBox.innerHTML = makeSpinnerSVG('&nbsp;&nbsp; Rendering notebook and uploading. Usually takes less than a minute.');
+              alertBox.className = 'alert alert-info no-padding';
 
-              var xhr = new XMLHttpRequest();
-              xhr.open('GET', url);
-              xhr.onload = () => {
-                if (xhr.status === 500) {
-                    alertBox.innerHTML = 'Notebook returned 500 error. Please contact help@onecodex.com for assistance.';
-                    alertBox.className = 'alert alert-danger';
-                    document.getElementById('pdf-report-filename').readOnly = false;
-                    document.getElementById('one-codex-save-button').disabled = false;
-                    document.getElementById('one-codex-run-all-save-button').disabled = false;
-                } else {
-                  try {
-                    var resp_json = JSON.parse(xhr.responseText);
-                  } catch(e) {
-                    var resp_json = {
-                      'status': 500,
-                      'message': 'Unspecified error. Please contact help@onecodex.com for assistance.'
+              // honestly, the only reason to use setTimeout here is so our SVG spinner starts spinning
+              setTimeout(() => {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url);
+                xhr.onload = () => {
+                  if (xhr.status === 500) {
+                      alertBox.innerHTML = 'Notebook returned 500 error. Please contact help@onecodex.com for assistance.';
+                      alertBox.className = 'alert alert-danger';
+                      document.getElementById('pdf-report-filename').readOnly = false;
+                      document.getElementById('one-codex-save-button').disabled = false;
+                      document.getElementById('one-codex-run-all-save-button').disabled = false;
+                  } else {
+                    try {
+                      var resp_json = JSON.parse(xhr.responseText);
+                    } catch(e) {
+                      var resp_json = {
+                        'status': 500,
+                        'message': 'Unspecified error. Please contact help@onecodex.com for assistance.'
+                      }
+                    }
+
+                    if (resp_json['status'] === 500) {
+                      alertBox.innerHTML = 'Upload failed. The server said:<br><br>' + resp_json['message'];
+                      alertBox.className = 'alert alert-danger';
+                      document.getElementById('pdf-report-filename').readOnly = false;
+                      document.getElementById('one-codex-save-button').disabled = false;
+                      document.getElementById('one-codex-run-all-save-button').disabled = false;
+                    } else {
+                      alertBox.innerHTML = 'Export successful! View the report here: <a href="' + 
+                        ONE_CODEX_DOCS_URL + '" target="_blank" class="alert-link">Documents Portal</a>';
+                      alertBox.className = 'alert alert-success';
+                      document.getElementById('one-codex-save-button').className = 'hidden';
+                      document.getElementById('one-codex-run-all-save-button').className = 'hidden';
+                      document.getElementById('one-codex-cancel-button').innerHTML = 'Return to Notebook';
                     }
                   }
-
-                  if (resp_json['status'] === 500) {
-                    alertBox.innerHTML = 'Upload failed. The server said:<br><br>' + resp_json['message'];
-                    alertBox.className = 'alert alert-danger';
-                    document.getElementById('pdf-report-filename').readOnly = false;
-                    document.getElementById('one-codex-save-button').disabled = false;
-                    document.getElementById('one-codex-run-all-save-button').disabled = false;
-                  } else {
-                    alertBox.innerHTML = 'Export successful! View the report here: <a href="' + 
-                      ONE_CODEX_DOCS_URL + '" target="_blank" class="alert-link">Documents Portal</a>';
-                    alertBox.className = 'alert alert-success';
-                    document.getElementById('one-codex-save-button').className = 'hidden';
-                    document.getElementById('one-codex-run-all-save-button').className = 'hidden';
-                    document.getElementById('one-codex-cancel-button').innerHTML = 'Return to Notebook';
-                  }
-                }
-              };
-              xhr.send();
+                };
+                xhr.send();
+              });
             }
           },
           'Run All And Save': {
@@ -110,9 +119,8 @@ define([
               document.getElementById('pdf-report-filename').readOnly = true;
               document.getElementById('one-codex-save-button').disabled = true;
               document.getElementById('one-codex-run-all-save-button').disabled = true;
-              alertBox.innerHTML = '<img src="https://app.onecodex.com/images/site-images/spinner.gif" ' +
-                'width="25px">&nbsp;&nbsp; Executing cells in notebook. Some notebooks may take a few minutes.';
-              alertBox.className = 'alert alert-info';
+              alertBox.innerHTML = makeSpinnerSVG('&nbsp;&nbsp; Executing cells in notebook. Some notebooks may take a few minutes.');
+              alertBox.className = 'alert alert-info no-padding';
 
               IPython.notebook.clear_all_output();
               IPython.notebook.execute_all_cells();
