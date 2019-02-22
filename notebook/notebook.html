@@ -96,7 +96,7 @@ data-notebook-path="{{notebook_path | urlencode}}"
                                 <li id="download_onecodex_html" style="display: none"><a href="#">{% trans %}HTML Report (.html){% endtrans %}</a></li>
                             </ul>
                         </li>
-                        <li id="one_codex_export">
+                        <li id="one_codex_export" style="display: none">
                             <a href="#" onClick="require(['{{base_url}}custom/onecodex.js'], (ocx) => { ocx.ExportModal('report.pdf'); })">
                                 Export to One Codex (.pdf)
                             </a>
