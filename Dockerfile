@@ -186,8 +186,7 @@ RUN cd /usr/local/lib/python3.6/site-packages/notebook \
     && patch -p0 < notebook.patch
 
 # Install One Codex Python lib
-#RUN pip install --no-cache onecodex[all]==0.4.0
-RUN git clone https://github.com/onecodex/onecodex && cd onecodex && pip install .[all]
+RUN pip install --no-cache onecodex[all]==0.4.0
 
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
