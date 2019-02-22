@@ -5,7 +5,7 @@ define([
   return {
     ExportModal: (default_file_name) => {
       const ONE_CODEX_DOCS_URL = 'https://app.onecodex.com/documents';
-      const SPINNER_SVG_URL = '/custom/one-codex-spinner.svg';
+      const SPINNER_SVG_URL = '../custom/one-codex-spinner.svg';
 
       var makeSpinnerSVG = (alertMsg) => {
         return `<table width="100%"><tr><td width="10%" style="padding: 5px">
