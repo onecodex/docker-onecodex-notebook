@@ -103,6 +103,9 @@ RUN pip install \
 # Jupyter notebook should have already been installed above, but here we force a particular version
 RUN pip install notebook==5.7.4
 
+# Pin tornado version, as 6.0.0 apparently breaks jupyter notebook
+RUN pip install tornado==5.1.1
+
 # Activate ipywidgets extension in the environment that runs the notebook server
 RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
 RUN jupyter contrib nbextension install --user && \
