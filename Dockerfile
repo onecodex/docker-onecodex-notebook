@@ -83,10 +83,11 @@ RUN pip install \
     ipywidgets==7.4.2 \
     jupyterthemes==0.20.0 \
     jupyter_contrib_nbextensions==0.5.1 \
-    pandas==0.23.0 \
     matplotlib==3.0.2 \
     numba==0.42.0 \
     numexpr==2.6.9 \
+    openpyxl==2.6.1 \
+    pandas==0.23.0 \
     # patsy==0.4.0 \
     # scikit-image==0.13.0 \
     scikit-learn==0.19.0 \
@@ -189,7 +190,7 @@ RUN cd /usr/local/lib/python3.6/site-packages/notebook \
     && patch -p0 < notebook.patch
 
 # Install One Codex Python lib
-RUN pip install --no-cache onecodex[all]==0.4.0
+RUN pip install --no-cache onecodex[all]==0.4.1
 
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
