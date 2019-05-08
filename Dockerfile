@@ -70,6 +70,7 @@ RUN pip install numpy==1.15.4
 
 # Install Python 3 packages
 RUN pip install \
+    altair==3.0.1 \
     awscli==1.16.81 \
     # beautifulsoup4==4.6 \
     biopython==1.72 \
