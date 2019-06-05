@@ -45,7 +45,7 @@ define([
               alertBox.innerHTML = '';
               alertBox.className = 'hidden';
 
-              if (nameInput.value === '' || nameInput.value.endsWith('.pdf') !== true) {
+              if (nameInput.value === '') {
                 alertBox.innerHTML = 'Please specify a valid filename ending in .pdf.';
                 alertBox.className = 'alert alert-danger';
                 return false;
@@ -53,6 +53,10 @@ define([
                 alertBox.innerHTML = 'Filenames must be less than 100 characters long.';
                 alertBox.className = 'alert alert-danger';
                 return false;
+              }
+
+              if (nameInput.value.endsWith('.pdf') !== true) {
+                nameInput.value = `${nameInput.value}.pdf`;
               }
 
               var notebook_path = utils.encode_uri_components(IPython.notebook.notebook_path);
