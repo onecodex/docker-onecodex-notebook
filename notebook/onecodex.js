@@ -129,8 +129,16 @@ define([
               IPython.notebook.clear_all_output();
               IPython.notebook.execute_all_cells();
 
+              let count_polls_not_busy = 0;
+
               let wait_for_ipython = setInterval(() => {
                 if (IPython.notebook.kernel_busy === false) {
+                  count_polls_not_busy++;
+                } else {
+                  count_polls_not_busy = 0;
+                }
+
+                if (count_polls_not_busy >= 4) {
                   clearInterval(wait_for_ipython);
                   document.getElementById('one-codex-save-button').disabled = false;
                   document.getElementById('one-codex-save-button').click();
