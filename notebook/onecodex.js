@@ -8,9 +8,9 @@ define([
       const SPINNER_SVG_URL = '../custom/one-codex-spinner.svg';
 
       var makeSpinnerSVG = (alertMsg) => {
-        return `<table width="100%"><tr><td width="10%" style="padding: 5px">
-                <object data="${SPINNER_SVG_URL}" type="image/svg+xml" width="50px" height="50px" />
-                </td><td width="90%">${alertMsg}</td></tr></table>`;
+        return `<table width="100%"><tr><td width="5%" style="padding: 5px">
+                <object data="${SPINNER_SVG_URL}" type="image/svg+xml" width="30px" height="30px" style="position: relative; top: 2px" />
+                </td><td width="95%">${alertMsg}</td></tr></table>`;
       };
 
       var formGroup = document.createElement('div');
@@ -77,7 +77,7 @@ define([
               // honestly, the only reason to use setTimeout here is so our SVG spinner starts spinning
               setTimeout(() => {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', url);
+                xhr.open('GET', url, true);
                 xhr.onload = () => {
                   if (xhr.status === 500) {
                       alertBox.innerHTML = 'Notebook returned 500 error. Please contact help@onecodex.com for assistance.';
@@ -112,7 +112,7 @@ define([
                   }
                 };
                 xhr.send();
-              });
+              }, 500);
             }
           },
           'Run All And Save': {
