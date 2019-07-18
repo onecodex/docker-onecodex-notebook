@@ -194,6 +194,13 @@ COPY notebook/notebook.patch /usr/local/lib/python3.6/site-packages/notebook
 RUN cd /usr/local/lib/python3.6/site-packages/notebook \
     && patch -p0 < notebook.patch
 
+# Install Node and vega-cli for server-side image rendering
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g --unsafe-perm vega-cli@5.4.0 vega-lite@2.7.0
+COPY notebook/vega-cli.patch /usr/lib/node_modules
+RUN cd /usr/lib/node_modules && patch -p0 < vega-cli.patch
+
 # Install One Codex Python lib
 RUN pip install --no-cache onecodex[all]==0.5.4
 
