@@ -165,7 +165,7 @@ RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list
     libffi6 \
     libcairo2 \
     libpango1.0.0 \
-    fonts-uralic \
+    fonts-texgyre \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
