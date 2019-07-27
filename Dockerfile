@@ -202,7 +202,7 @@ COPY notebook/vega-cli.patch /usr/lib/node_modules
 RUN cd /usr/lib/node_modules && patch -p0 < vega-cli.patch
 
 # Install One Codex Python lib
-RUN pip install --no-cache onecodex[all]==0.6.1
+RUN pip install --no-cache onecodex[all]==0.6.2
 
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
