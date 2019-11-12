@@ -131,11 +131,8 @@ RUN wget https://ftp.samba.org/pub/cwrap/nss_wrapper-1.1.2.tar.gz && \
 RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 RUN apt-get update && apt-get install -yq --no-install-recommends google-chrome-stable
-RUN wget https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip \
-    && unzip chromedriver_linux64.zip \
-    && mv chromedriver /usr/bin/chromedriver \
-    && chmod 755 /usr/bin/chromedriver \
-    && rm chromedriver_linux64.zip
+COPY notebook/chromedriver.sh /root/chromedriver.sh
+RUN chmod +x /root/chromedriver.sh && /root/chromedriver.sh
 
 # Install R and some basic packages
 RUN apt-get update && apt-get install -yq --no-install-recommends \
