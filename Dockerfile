@@ -3,7 +3,7 @@
 # Extended from github.com/jupyter/docker-stacks
 # See also http://blog.dscpl.com.au/2016/01/roundup-of-docker-issues-when-hosting.html
 
-FROM python:3.6.6-slim-stretch
+FROM python:3.8.3-slim-buster
 
 LABEL maintainer="Nick Greenfield <nick@onecodex.com>"
 
@@ -65,48 +65,20 @@ RUN mkdir /home/$NB_USER/work && \
 # Update pip
 RUN pip install --upgrade pip
 
-# Numpy must be installed first
-RUN pip install numpy==1.15.4
+# Install numpy
+RUN pip install numpy==1.18.4
 
-# Install Python 3 packages
-RUN pip install \
-    awscli==1.16.81 \
-    # beautifulsoup4==4.6 \
-    biopython==1.72 \
-    bokeh==1.0.3 \
-    certifi==2018.10.15 \
-    click==7.0 \
-    # cloudpickle==0.2.2 \
-    cython==0.29.2 \
-    # dill==0.2 \
-    # h5py==2.9.0 \
-    ipywidgets==7.4.2 \
-    jupyterthemes==0.20.0 \
-    jupyter_contrib_nbextensions==0.5.1 \
-    matplotlib==3.0.2 \
-    numba==0.42.0 \
-    numexpr==2.6.9 \
-    openpyxl==2.6.1 \
-    pandas==0.23.0 \
-    # patsy==0.4.0 \
-    # scikit-image==0.13.0 \
-    scikit-learn==0.19.0 \
-    scipy==1.1.0 \
-    seaborn==0.9.0 \
-    selenium==3.141.0 \
-    statsmodels==0.10.1 \
-    # sqlalchemy==1.1.0 \
-    # statsmodels==0.8.0 \
-    # sympy==1.1 \
-    # vincent==0.4.0 \
-    weasyprint==47 \
-    xlrd==1.2.0
+# Install Jupyter extensions
+RUN pip install ipywidgets jupyter_contrib_nbextensions
+
+# Install other helpful modules
+RUN pip install openpyxl==3.0.3 xlrd==1.2.0 statsmodels==0.11.1
+
+# Install weasyprint
+RUN pip install WeasyPrint==51
 
 # Jupyter notebook should have already been installed above, but here we force a particular version
-RUN pip install notebook==5.7.4
-
-# Pin tornado version, as 6.0.0 apparently breaks jupyter notebook
-RUN pip install tornado==5.1.1
+RUN pip install onecodex[all,reports]==0.8.0
 
 # Activate ipywidgets extension in the environment that runs the notebook server
 RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
@@ -122,39 +94,10 @@ RUN wget https://ftp.samba.org/pub/cwrap/nss_wrapper-1.1.2.tar.gz && \
     rm nss_wrapper-1.1.2.tar.gz && \
     mkdir nss_wrapper/obj && \
     (cd nss_wrapper/obj && \
-        cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DLIB_SUFFIX=64 .. && \
-        make && \
-        make install) && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DLIB_SUFFIX=64 .. && \
+    make && \
+    make install) && \
     rm -rf nss_wrapper
-
-# Allows rendering of Vega images in headless chrome browser
-RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-RUN apt-get update && apt-get install -yq --no-install-recommends google-chrome-stable
-COPY notebook/chromedriver.sh /root/chromedriver.sh
-RUN chmod +x /root/chromedriver.sh && /root/chromedriver.sh
-
-# Install R and some basic packages
-RUN apt-get update && apt-get install -yq --no-install-recommends \
-    r-base \
-    r-cran-dplyr \
-    r-cran-plyr \
-    r-cran-ggplot2 \
-    r-cran-tidyr \
-    r-cran-shiny \
-    r-cran-stringr \
-    r-cran-rsqlite \
-    r-cran-reshape2 \
-    r-cran-caret \
-    r-cran-rcurl \
-    r-cran-crayon \
-    r-cran-randomforest \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# This lets us select R from inside the notebook
-RUN echo "install.packages(\"IRkernel\", repos=\"https://cran.rstudio.com\")" | R --no-save
-RUN echo "IRkernel::installspec()" | R --no-save
 
 # Dependencies for weasyprint. Known bugs on libcairo < 1.15.4. Must pull from debian-buster to get 1.16
 RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
@@ -167,6 +110,11 @@ RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Node and vega-cli for server-side image rendering
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g --unsafe-perm vega-cli@5.13.0 vega-lite@4.13.0 canvas@2.6.1
+
 # Configure container startup
 EXPOSE 8888
 COPY notebook/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -176,9 +124,8 @@ CMD ["jupyter", "notebook"]
 
 # Add assets
 RUN mkdir /opt/onecodex/
-# COPY install/* /opt/onecodex/
-COPY notebook/notebook.html /usr/local/lib/python3.6/site-packages/notebook/templates
-COPY notebook/override.css /usr/local/lib/python3.6/site-packages/notebook/static/notebook/css
+COPY notebook/notebook.html /usr/local/lib/python3.8/site-packages/notebook/templates
+COPY notebook/override.css /usr/local/lib/python3.8/site-packages/notebook/static/notebook/css
 COPY notebook/onecodex.js /home/$NB_USER/.jupyter/custom/
 COPY notebook/one-codex-spinner.svg /home/$NB_USER/.jupyter/custom/
 
@@ -188,19 +135,9 @@ COPY notebook/token_notebook.py /usr/local/bin/token_notebook.py
 RUN chmod +x /usr/local/bin/token_notebook.py
 
 # Add patch to jupyter notebook for export to One Codex document portal
-COPY notebook/notebook.patch /usr/local/lib/python3.6/site-packages/notebook
-RUN cd /usr/local/lib/python3.6/site-packages/notebook \
+COPY notebook/notebook.patch /usr/local/lib/python3.8/site-packages/notebook
+RUN cd /usr/local/lib/python3.8/site-packages/notebook \
     && patch -p0 < notebook.patch
-
-# Install Node and vega-cli for server-side image rendering
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get -y install nodejs
-RUN npm install -g --unsafe-perm vega-cli@5.4.0 vega-lite@2.7.0
-COPY notebook/vega-cli.patch /usr/lib/node_modules
-RUN cd /usr/lib/node_modules && patch -p0 < vega-cli.patch
-
-# Install One Codex Python lib
-RUN pip install --no-cache onecodex[all]==0.7.2
 
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
