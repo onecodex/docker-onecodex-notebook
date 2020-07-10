@@ -110,6 +110,9 @@ RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copy `onecodex` installed fonts to local directory
+RUN cp /usr/local/lib/python3.8/site-packages/onecodex/assets/fonts/*.otf /usr/local/share/fonts && fc-cache
+
 # Install Node and vega-cli for server-side image rendering
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get -y install nodejs
