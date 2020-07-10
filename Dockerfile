@@ -78,7 +78,7 @@ RUN pip install openpyxl==3.0.3 xlrd==1.2.0 statsmodels==0.11.1
 RUN pip install WeasyPrint==51
 
 # Jupyter notebook should have already been installed above, but here we force a particular version
-RUN pip install onecodex[all,reports]==0.9.0
+RUN pip install onecodex[all,reports]==0.9.1
 
 # Activate ipywidgets extension in the environment that runs the notebook server
 RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
