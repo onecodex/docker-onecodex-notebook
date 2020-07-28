@@ -65,6 +65,10 @@ RUN mkdir /home/$NB_USER/work && \
 # Update pip
 RUN pip install --upgrade pip
 
+# Install awscli
+# IMPORTANT: this is required for saving the notebook to S3
+RUN pip install awscli==1.18.106
+
 # Install numpy
 RUN pip install numpy==1.18.4
 
