@@ -78,6 +78,9 @@ RUN pip install biopython==1.78
 # Install Jupyter extensions
 RUN pip install ipywidgets jupyter_contrib_nbextensions
 
+# Pin nbconvert to 5.x.x
+RUN pip install nbconvert==5.6
+
 # Install other helpful modules
 RUN pip install openpyxl==3.0.3 xlrd==1.2.0 statsmodels==0.11.1
 
