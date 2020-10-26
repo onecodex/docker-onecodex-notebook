@@ -72,6 +72,9 @@ RUN pip install awscli==1.18.106
 # Install numpy
 RUN pip install numpy==1.18.4
 
+# Install  bipython
+RUN pip install biopython==1.78
+
 # Install Jupyter extensions
 RUN pip install ipywidgets jupyter_contrib_nbextensions
 
@@ -148,7 +151,11 @@ RUN cd /usr/local/lib/python3.8/site-packages/notebook \
 
 # Finally fix permissions on everything
 # See https://github.com/jupyter/docker-stacks/issues/188
-RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+w,g+w /home/$NB_USER
+# RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+rw,g+rw /home/$NB_USER
+RUN chown -R $NB_USER:root /home/$NB_USER && find /home/$NB_USER -type d -exec chmod 775 {} \;
+
+
+# RUN chown -R $NB_USER:$(id -gn $USER) /home/$NB_USER/.config
 
 # Switch to unprivileged user, jovyan
 USER $NB_USER
