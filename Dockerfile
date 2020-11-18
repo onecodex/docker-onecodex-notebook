@@ -52,6 +52,9 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV PATH $HOME/.local/bin:$PATH
 
+# Disable npm package update notifications (DEV-4202)
+ENV NO_UPDATE_NOTIFIER=1
+
 # Create jovyan user with UID=1000 and in the root group
 # See https://github.com/jupyter/docker-stacks/issues/188
 RUN useradd -m -s /bin/bash -N -u $NB_UID -g 0 $NB_USER
@@ -156,9 +159,6 @@ RUN cd /usr/local/lib/python3.8/site-packages/notebook \
 # See https://github.com/jupyter/docker-stacks/issues/188
 # RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+rw,g+rw /home/$NB_USER
 RUN chown -R $NB_USER:root /home/$NB_USER && find /home/$NB_USER -type d -exec chmod 775 {} \;
-
-
-# RUN chown -R $NB_USER:$(id -gn $USER) /home/$NB_USER/.config
 
 # Switch to unprivileged user, jovyan
 USER $NB_USER
