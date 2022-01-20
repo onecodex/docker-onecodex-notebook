@@ -1,0 +1,40 @@
+name: Publish new image version
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+
+env:
+  REPO: quay.io/refgenomics/docker-onecodex-notebook
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to quay.io
+        run: echo ${{ secrets.QUAY_PASSWORD }} | docker login -u ${{ secrets.QUAY_USERNAME }} quay.io --password-stdin
+
+      - name: Extract branch/tag name
+        run: |
+          export TAG="${GITHUB_REF##*/}"
+          # Pushes to the "master" branch are published as "latest" image tag
+          if [ "$TAG" = "master" ]; then
+            export TAG="latest"
+          fi
+          echo "tag=$TAG" >> $GITHUB_ENV
+
+      - name: Build image
+        run: |
+          export DOCKER_BUILDKIT=1
+          docker build \
+            -t ${{env.REPO}}:${{env.tag}} \
+            .
+
+      - name: Publish image
+        run: |
+          docker push ${{env.REPO}}:${{env.tag}}
