@@ -38,3 +38,16 @@ jobs:
       - name: Publish image
         run: |
           docker push ${{env.REPO}}:${{env.tag}}
+
+      - name: Notify Slack
+        uses: rtCamp/action-slack-notify@master
+        if: ${{ success() }}
+        env:
+          SLACK_WEBHOOK: "${{ secrets.ENGINEERING_SLACK_WEBHOOK }}"
+          SLACK_CHANNEL: "#ocx-engineering"
+          SLACK_USERNAME: "Github"
+          SLACK_ICON: "https://github.com/quintessence/slack-icons/blob/master/images/docker-logo-slack-icon.png"
+          SLACK_COLOR: "good"
+          SLACK_MESSAGE: "New image *${{env.REPO}}:${{env.tag}}* ready!"
+          SLACK_TITLE: "Docker image bakery"
+        continue-on-error: true
