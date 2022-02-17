@@ -70,7 +70,7 @@ RUN pip install --upgrade pip
 
 # Install awscli
 # IMPORTANT: this is required for saving the notebook to S3
-RUN pip install awscli==1.18.140
+RUN pip install awscli==1.22.55
 
 # Install numpy
 RUN pip install numpy==1.18.4

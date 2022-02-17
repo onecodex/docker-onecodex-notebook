@@ -7,7 +7,7 @@ define([
         window.addEventListener("message", (event) => {
             const source = iframe_source || "http://localhost";
             if (event.origin !== source) {
-                console.log(`Event from unknown source (${event.origin}) : ${event.data}`);
+                console.error(`Event from unknown source (${event.origin}) : ${event.data}`);
             }
             else {
                 // Message coming from a confirmed source
