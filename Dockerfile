@@ -70,7 +70,7 @@ RUN pip install --upgrade pip
 
 # Install awscli
 # IMPORTANT: this is required for saving the notebook to S3
-RUN pip install awscli==1.18.140
+RUN pip install awscli==1.22.55
 
 # Install numpy
 RUN pip install numpy==1.18.4
@@ -148,6 +148,9 @@ COPY notebook/one-codex-spinner.svg /home/$NB_USER/.jupyter/custom/
 # Add local files
 COPY notebook/jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 COPY notebook/token_notebook.py /usr/local/bin/token_notebook.py
+COPY notebook/save_message_handler.js /usr/local/share/jupyter/customextensions/
+RUN jupyter nbextension install /usr/local/share/jupyter/customextensions/ \
+    && jupyter nbextension enable customextensions/save_message_handler
 RUN chmod +x /usr/local/bin/token_notebook.py
 
 # Add patch to jupyter notebook for export to One Codex document portal
