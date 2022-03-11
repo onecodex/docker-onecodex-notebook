@@ -134,6 +134,15 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get -y install nodejs
 RUN npm install -g --unsafe-perm vega-cli@5.13.0 vega-lite@4.13.0 canvas@2.6.1
 
+# install R
+RUN apt-get update && apt-get install -yq r-base && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install R packages
+RUN R -e "install.packages(c('tidyverse'), quiet = TRUE)"
+
+# Install rpy2
+RUN pip install rpy2
+
 # Configure container startup
 EXPOSE 8888
 COPY notebook/entrypoint.sh /usr/local/bin/entrypoint.sh
