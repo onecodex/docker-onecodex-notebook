@@ -3,7 +3,7 @@
 # Extended from github.com/jupyter/docker-stacks
 # See also http://blog.dscpl.com.au/2016/01/roundup-of-docker-issues-when-hosting.html
 
-FROM python:3.8.3-slim-buster
+FROM python:3.8-slim-bullseye
 
 LABEL maintainer="Nick Greenfield <nick@onecodex.com>"
 
@@ -26,12 +26,21 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     gnupg \
     locales \
     python-dev \
+    libffi7 \
+    libpango-1.0-0 \
+    libcairo2 \
     sudo \
     unzip \
     vim \
     wget \
+    fonts-texgyre \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Node and vega-cli for server-side image rendering
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g --unsafe-perm vega-cli@5.13.0 vega-lite@4.13.0 canvas@2.6.1
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
@@ -65,36 +74,13 @@ RUN mkdir /home/$NB_USER/work && \
     mkdir -p -m 770 /home/$NB_USER/.local/share/jupyter && \
     echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$NB_USER/.curlrc
 
-# Update pip
-RUN pip install --upgrade pip
 
-# Install awscli
-# IMPORTANT: this is required for saving the notebook to S3
-RUN pip install awscli==1.22.55
-
-# Install numpy
-RUN pip install numpy==1.18.4
-
-# Install  bipython
-RUN pip install biopython==1.78
-
-# Install Jupyter extensions
-RUN pip install ipywidgets jupyter_contrib_nbextensions
-
-# Pin nbconvert to 5.x.x
-RUN pip install nbconvert==5.6
-
-# Install other helpful modules
-RUN pip install openpyxl==3.0.3 xlrd==1.2.0 statsmodels==0.11.1
-
-# Install weasyprint
-RUN pip install WeasyPrint==51
-
-# Jupyter notebook should have already been installed above, but here we force a particular version
-RUN pip install onecodex[all,reports]==0.10.0
+ADD requirements.txt /root/
+RUN pip install -U pip && \
+    pip install -q -r /root/requirements.txt
 
 # Activate ipywidgets extension in the environment that runs the notebook server
-RUN jupyter nbextension enable --py widgetsnbextension --sys-prefix
+RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter contrib nbextension install --user && \
     jupyter nbextension enable python-markdown/main
 
@@ -112,24 +98,8 @@ RUN wget https://ftp.samba.org/pub/cwrap/nss_wrapper-1.1.2.tar.gz && \
     make install) && \
     rm -rf nss_wrapper
 
-# Dependencies for weasyprint. Known bugs on libcairo < 1.15.4. Must pull from debian-buster to get 1.16
-RUN echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list \
-    && apt-get update \
-    && apt-get install -yq --no-install-recommends \
-    libffi6 \
-    libcairo2 \
-    libpango1.0.0 \
-    fonts-texgyre \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 # Copy `onecodex` installed fonts to local directory
 RUN cp /usr/local/lib/python3.8/site-packages/onecodex/assets/fonts/*.otf /usr/local/share/fonts && fc-cache
-
-# Install Node and vega-cli for server-side image rendering
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get -y install nodejs
-RUN npm install -g --unsafe-perm vega-cli@5.13.0 vega-lite@4.13.0 canvas@2.6.1
 
 # Configure container startup
 EXPOSE 8888
@@ -144,6 +114,7 @@ COPY notebook/notebook.html /usr/local/lib/python3.8/site-packages/notebook/temp
 COPY notebook/override.css /usr/local/lib/python3.8/site-packages/notebook/static/notebook/css
 COPY notebook/onecodex.js /home/$NB_USER/.jupyter/custom/
 COPY notebook/one-codex-spinner.svg /home/$NB_USER/.jupyter/custom/
+COPY notebook/override.css /home/$NB_USER/.jupyter/custom/custom.css
 
 # Add local files
 COPY notebook/jupyter_notebook_config.py /home/$NB_USER/.jupyter/
