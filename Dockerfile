@@ -134,5 +134,8 @@ RUN cd /usr/local/lib/python3.8/site-packages/notebook \
 # RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+rw,g+rw /home/$NB_USER
 RUN chown -R $NB_USER:root /home/$NB_USER && find /home/$NB_USER -type d -exec chmod 775 {} \;
 
+# Provide full access to the Python directory to allow for pip installs
+RUN chown -R $NB_USER:root /usr/local/lib/python3.8
+
 # Switch to unprivileged user, jovyan
 USER $NB_USER
