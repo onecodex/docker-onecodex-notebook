@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     python-dev \
     libffi7 \
     libpango-1.0-0 \
+    libpangoft2-1.0-0 \
     libcairo2 \
     sudo \
     unzip \
@@ -133,6 +134,8 @@ RUN cd /usr/local/lib/python3.8/site-packages/notebook \
 # See https://github.com/jupyter/docker-stacks/issues/188
 # RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+rw,g+rw /home/$NB_USER
 RUN chown -R $NB_USER:root /home/$NB_USER && find /home/$NB_USER -type d -exec chmod 775 {} \;
+
+ENV PYTHONPATH "/home/jovyan/.local/lib/python3.8"
 
 # Provide full access to the Python directory to allow for pip installs
 RUN chown -R $NB_USER:root /usr/local/lib/python3.8
