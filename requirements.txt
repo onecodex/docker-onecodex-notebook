@@ -1,6 +1,6 @@
 awscli==1.22.55
 numpy==1.22.3
-scikit-bio==0.5.7
+scikit-bio==0.5.8
 biopython==1.79
 ipywidgets
 jupyter_contrib_nbextensions
