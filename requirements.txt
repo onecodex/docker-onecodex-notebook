@@ -10,5 +10,5 @@ xlrd==1.2.0
 statsmodels==0.13.2
 WeasyPrint==54.2
 onecodex[all,reports]==0.12.0
-taxonomy==0.8.1
+taxonomy==0.10.0
 widgetsnbextension
