@@ -8,7 +8,6 @@ nbconvert==6.5.0
 openpyxl==3.0.3
 xlrd==1.2.0
 statsmodels==0.13.2
-WeasyPrint==59.0
 onecodex[all,reports]==0.13.0
 taxonomy==0.8.1
 widgetsnbextension
