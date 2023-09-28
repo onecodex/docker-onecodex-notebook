@@ -9,5 +9,6 @@ openpyxl==3.0.3
 xlrd==1.2.0
 statsmodels==0.13.2
 onecodex[all,reports]==0.13.0
+traitlets==5.9.0
 taxonomy==0.10.0
 widgetsnbextension
