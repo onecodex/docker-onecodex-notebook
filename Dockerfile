@@ -140,5 +140,9 @@ ENV PYTHONPATH "/home/jovyan/.local/lib/python3.8"
 # Provide full access to the Python directory to allow for pip installs
 RUN chown -R $NB_USER:root /usr/local/lib/python3.8
 
+# upgrade weasyprint to master
+
+RUN pip install 'git+https://github.com/Kozea/WeasyPrint.git'
+
 # Switch to unprivileged user, jovyan
 USER $NB_USER

@@ -5,20 +5,14 @@ import subprocess
 IMAGE = "docker-onecodex-notebook"
 
 
-def run_docker_container(tmp_path, container_command, env=None):
-    if env is None:
-        env = {}
-
+def run_docker_container(tmp_path, container_command):
     command = [
         "docker",
         "run",
         "--rm",
-        *("--volume", f"{os.getcwd()}:/repo"),
-        *("--volume", f"{tmp_path}:/pytest"),
         *("--volume", f"{os.getcwd()}/test/notebooks/:/share"),
+        *("--user", "1000"),
         *("--entrypoint", "/usr/local/bin/jupyter"),
-        *("--workdir", "/pytest"),
-        *[i for r in [("--env", f"{k}={v}") for k, v in env.items()] for i in r],
         IMAGE,
         *container_command,
     ]
@@ -54,10 +48,9 @@ def test_render_notebook(tmp_path):
         subprocess.check_output(
             [
                 "diff-pdf",
+                *("--output-diff", "diff.pdf"),
                 "test/notebooks/example.pdf",
                 expected_path,
-                "--output-diff",
-                "diff.pdf",
             ]
         )
     except subprocess.CalledProcessError:

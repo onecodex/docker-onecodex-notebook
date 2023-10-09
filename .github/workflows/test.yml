@@ -1,0 +1,54 @@
+name: test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install Python test dependencies in a venv
+        run: |
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install -q -U pip
+          pip install --progress-bar=off pytest
+
+      - name: Install diff-pdf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpoppler-glib-dev \
+            libwxgtk3.0-gtk3-dev
+
+          git clone --depth=1 --branch master https://github.com/vslavik/diff-pdf.git
+          cd diff-pdf
+          ./bootstrap
+          ./configure
+          make
+          sudo mv diff-pdf /usr/bin/diff-pdf
+
+      - name: Docker build
+        run: |
+          docker build -t docker-onecodex-notebook .
+
+      - name: Run lint checks & tests
+        run: |
+          sudo chmod 777 -R .
+          . venv/bin/activate
+          py.test -vv test/
+
+      - name: Upload Report PDFs
+        uses: actions/upload-artifact@v2
+        with:
+          name: example reports
+          path: diff.pdf
