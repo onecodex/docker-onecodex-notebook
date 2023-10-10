@@ -5,7 +5,7 @@ import subprocess
 IMAGE = "docker-onecodex-notebook"
 
 
-def run_docker_container(tmp_path, container_command):
+def run_docker_container(container_command):
     command = [
         "docker",
         "run",
@@ -37,10 +37,8 @@ def run_docker_container(tmp_path, container_command):
     return result
 
 
-def test_render_notebook(tmp_path):
-    run_docker_container(
-        tmp_path, ["nbconvert", "--execute", "--to", "onecodex_pdf", "/share/example.ipynb"]
-    )
+def test_render_notebook():
+    run_docker_container(["nbconvert", "--execute", "--to", "onecodex_pdf", "/share/example.ipynb"])
 
     expected_path = "test/notebooks/example_expected.pdf"
 
