@@ -5,7 +5,10 @@ import subprocess
 IMAGE = "docker-onecodex-notebook"
 
 
-def run_docker_container(container_command):
+def run_docker_container(container_command, env=None):
+    if env is None:
+        env = {}
+
     command = [
         "docker",
         "run",
@@ -13,6 +16,7 @@ def run_docker_container(container_command):
         *("--volume", f"{os.getcwd()}/test/notebooks/:/share"),
         *("--user", "1000"),
         *("--entrypoint", "/usr/local/bin/jupyter"),
+        *[i for r in [("--env", f"{k}={v}") for k, v in env.items()] for i in r],
         IMAGE,
         *container_command,
     ]
@@ -47,7 +51,8 @@ def test_render_notebook():
             # https://github.com/onecodex/onecodex#jupyter-notebook-custom-exporters)
             "onecodex_pdf",
             "/share/example.ipynb",
-        ]
+        ],
+        env={"ONE_CODEX_INSERT_DATE": "False"},  # prevent date from showing up in diff
     )
 
     expected_path = "test/notebooks/example_expected.pdf"
