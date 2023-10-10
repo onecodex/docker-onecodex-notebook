@@ -30,8 +30,9 @@ jobs:
             libpoppler-glib-dev \
             libwxgtk3.0-gtk3-dev
 
-          git clone --depth=1 --branch master https://github.com/vslavik/diff-pdf.git
-          cd diff-pdf
+          git clone https://github.com/vslavik/diff-pdf.git
+          # v0.5.1
+          cd diff-pdf && git checkout 150de72f7eebf8c9d69ee79b3cd28d9e7d7793f5
           ./bootstrap
           ./configure
           make
