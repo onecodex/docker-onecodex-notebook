@@ -38,7 +38,17 @@ def run_docker_container(container_command):
 
 
 def test_render_notebook():
-    run_docker_container(["nbconvert", "--execute", "--to", "onecodex_pdf", "/share/example.ipynb"])
+    run_docker_container(
+        [
+            "nbconvert",
+            "--execute",
+            "--to",
+            # custom One Codex export format (see
+            # https://github.com/onecodex/onecodex#jupyter-notebook-custom-exporters)
+            "onecodex_pdf",
+            "/share/example.ipynb",
+        ]
+    )
 
     expected_path = "test/notebooks/example_expected.pdf"
 
