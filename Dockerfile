@@ -143,7 +143,7 @@ RUN chown -R $NB_USER:root /usr/local/lib/python3.8
 # Fix for transparency issue
 # Pin in onecodex/onecodex once version w/ fix is released
 # https://github.com/Kozea/WeasyPrint/commit/4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef
-RUN pip install 'git+https://github.com/Kozea/WeasyPrint.git@4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef'
+RUN pip install --force-reinstall 'git+https://github.com/Kozea/WeasyPrint.git@4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef'
 
 # Switch to unprivileged user, jovyan
 USER $NB_USER
