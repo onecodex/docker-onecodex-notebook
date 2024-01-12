@@ -49,6 +49,7 @@ jobs:
           py.test -vv test/
 
       - name: Upload Report PDFs
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: example reports
