@@ -3,7 +3,7 @@
 # Extended from github.com/jupyter/docker-stacks
 # See also http://blog.dscpl.com.au/2016/01/roundup-of-docker-issues-when-hosting.html
 
-FROM python:3.8-slim-bullseye
+FROM python:3.9-slim-bullseye
 
 LABEL maintainer="Nick Greenfield <nick@onecodex.com>"
 
@@ -100,7 +100,7 @@ RUN wget https://ftp.samba.org/pub/cwrap/nss_wrapper-1.1.2.tar.gz && \
     rm -rf nss_wrapper
 
 # Copy `onecodex` installed fonts to local directory
-RUN cp /usr/local/lib/python3.8/site-packages/onecodex/assets/fonts/*.otf /usr/local/share/fonts && fc-cache
+RUN cp /usr/local/lib/python3.9/site-packages/onecodex/assets/fonts/*.otf /usr/local/share/fonts && fc-cache
 
 # Configure container startup
 EXPOSE 8888
@@ -111,8 +111,8 @@ CMD ["jupyter", "notebook"]
 
 # Add assets
 RUN mkdir /opt/onecodex/
-COPY notebook/notebook.html /usr/local/lib/python3.8/site-packages/notebook/templates
-COPY notebook/override.css /usr/local/lib/python3.8/site-packages/notebook/static/notebook/css
+COPY notebook/notebook.html /usr/local/lib/python3.9/site-packages/notebook/templates
+COPY notebook/override.css /usr/local/lib/python3.9/site-packages/notebook/static/notebook/css
 COPY notebook/onecodex.js /home/$NB_USER/.jupyter/custom/
 COPY notebook/one-codex-spinner.svg /home/$NB_USER/.jupyter/custom/
 COPY notebook/override.css /home/$NB_USER/.jupyter/custom/custom.css
@@ -126,8 +126,8 @@ RUN jupyter nbextension install /usr/local/share/jupyter/customextensions/ \
 RUN chmod +x /usr/local/bin/token_notebook.py
 
 # Add patch to jupyter notebook for export to One Codex document portal
-COPY notebook/notebook.patch /usr/local/lib/python3.8/site-packages/notebook
-RUN cd /usr/local/lib/python3.8/site-packages/notebook \
+COPY notebook/notebook.patch /usr/local/lib/python3.9/site-packages/notebook
+RUN cd /usr/local/lib/python3.9/site-packages/notebook \
     && patch -p0 < notebook.patch
 
 # Finally fix permissions on everything
@@ -135,15 +135,17 @@ RUN cd /usr/local/lib/python3.8/site-packages/notebook \
 # RUN chown -R $NB_USER:root /home/$NB_USER && chmod -R u+rw,g+rw /home/$NB_USER
 RUN chown -R $NB_USER:root /home/$NB_USER && find /home/$NB_USER -type d -exec chmod 775 {} \;
 
-ENV PYTHONPATH "/home/jovyan/.local/lib/python3.8"
+ENV PYTHONPATH "/home/jovyan/.local/lib/python3.9"
 
 # Provide full access to the Python directory to allow for pip installs
-RUN chown -R $NB_USER:root /usr/local/lib/python3.8
+RUN chown -R $NB_USER:root /usr/local/lib/python3.9
 
 # Fix for transparency issue
 # Pin in onecodex/onecodex once version w/ fix is released
 # https://github.com/Kozea/WeasyPrint/commit/4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef
 RUN pip install --force-reinstall 'git+https://github.com/Kozea/WeasyPrint.git@4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef'
+
+RUN pip install --force-reinstall 'git+https://github.com/CourtBouillon/pydyf.git@f340fcc949382e183118b4807491b9f5cab4a89b'
 
 # Switch to unprivileged user, jovyan
 USER $NB_USER
