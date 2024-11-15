@@ -61,7 +61,7 @@ def test_render_notebook():
         subprocess.check_output(
             [
                 "diff-pdf",
-                *("--output-diff", "diff.pdf"),
+                *("--output-diff", "test/notebooks/diff.pdf"),
                 "test/notebooks/example.pdf",
                 expected_path,
             ]
