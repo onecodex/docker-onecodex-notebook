@@ -38,11 +38,6 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node and vega-cli for server-side image rendering
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get -y install nodejs
-RUN npm install -g --unsafe-perm vega-cli@5.13.0 vega-lite@4.13.0 canvas@2.6.1
-
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
@@ -61,9 +56,6 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV PATH $HOME/.local/bin:$PATH
-
-# Disable npm package update notifications (DEV-4202)
-ENV NO_UPDATE_NOTIFIER=1
 
 # Create jovyan user with UID=1000 and in the root group
 # See https://github.com/jupyter/docker-stacks/issues/188
@@ -139,13 +131,6 @@ ENV PYTHONPATH "/home/jovyan/.local/lib/python3.9"
 
 # Provide full access to the Python directory to allow for pip installs
 RUN chown -R $NB_USER:root /usr/local/lib/python3.9
-
-# Fix for transparency issue
-# Pin in onecodex/onecodex once version w/ fix is released
-# https://github.com/Kozea/WeasyPrint/commit/4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef
-RUN pip install --force-reinstall 'git+https://github.com/Kozea/WeasyPrint.git@4dfe6079c2d1bd91cccfd9a7d78f8924e2dfabef'
-
-RUN pip install --force-reinstall 'git+https://github.com/CourtBouillon/pydyf.git@f340fcc949382e183118b4807491b9f5cab4a89b'
 
 # Switch to unprivileged user, jovyan
 USER $NB_USER
