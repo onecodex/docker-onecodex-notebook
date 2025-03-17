@@ -52,3 +52,7 @@ div.cell.selected.jupyter-soft-selected:before {
   content: '';
   background: #2DB998;
 }
+
+.vega-embed.has-actions > details {
+  flex-shrink: 0;
+}
