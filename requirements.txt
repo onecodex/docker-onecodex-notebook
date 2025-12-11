@@ -7,5 +7,5 @@ openpyxl
 xlrd
 statsmodels
 onecodex[all,reports]==0.19.1
-taxonomy==0.10.0
+taxonomy
 widgetsnbextension
