@@ -6,6 +6,6 @@ nbconvert==6.5.0
 openpyxl
 xlrd
 statsmodels
-onecodex[all,reports]==0.19.1
+onecodex[all,reports]==0.19.3
 taxonomy
 widgetsnbextension
