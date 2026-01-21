@@ -14,4 +14,4 @@ release: test build
 	$(DOCKER) push $(REPO)
 
 build:
-	$(DOCKER) build -t $(REPO):$(TAG) .
+	$(DOCKER) build --platform linux/amd64 --tag $(REPO):$(TAG) .
