@@ -1,11 +1,13 @@
+# jupyter_contrib_nbextensions imports pkg_resources, which setuptools removed
+# in v81; the python:3.13-slim base image no longer ships setuptools at all.
+setuptools<81
 awscli
 biopython
 ipywidgets
 jupyter_contrib_nbextensions
 nbconvert==6.5.0
-openpyxl
 xlrd
 statsmodels
-onecodex[all,reports]==0.19.3
+onecodex[all,reports]==1.1.0
 taxonomy
 widgetsnbextension
