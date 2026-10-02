@@ -4,7 +4,7 @@
 # See also http://blog.dscpl.com.au/2016/01/roundup-of-docker-issues-when-hosting.html
 
 # Build the nss_wrapper separately
-FROM python:3.13-slim-bullseye AS nss-builder
+FROM python:3.13-slim-bookworm AS nss-builder
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV NSS_WRAPPER_VERSION 1.1.2
@@ -26,7 +26,7 @@ RUN wget -q https://ftp.samba.org/pub/cwrap/nss_wrapper-${NSS_WRAPPER_VERSION}.t
     make install)
 
 
-FROM python:3.13-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 LABEL maintainer="Nick Greenfield <nick@onecodex.com>"
 
@@ -44,7 +44,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     locales \
     patch \
     procps \
-    libffi7 \
+    libffi8 \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
     libcairo2 \
