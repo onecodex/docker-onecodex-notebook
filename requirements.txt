@@ -7,6 +7,6 @@ jupyter_contrib_nbextensions
 nbconvert==6.5.0
 xlrd
 statsmodels
-onecodex[all,reports]==1.1.0
+onecodex[all,reports]==1.2.0
 taxonomy
 widgetsnbextension
