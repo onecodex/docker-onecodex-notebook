@@ -3,7 +3,7 @@
 # Extended from github.com/jupyter/docker-stacks
 # See also http://blog.dscpl.com.au/2016/01/roundup-of-docker-issues-when-hosting.html
 
-FROM python:3.13-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 LABEL maintainer="Nick Greenfield <nick@onecodex.com>"
 
@@ -25,8 +25,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     git \
     gnupg \
     locales \
-    python-dev \
-    libffi7 \
+    libffi8 \
     libpango-1.0-0 \
     libpangoft2-1.0-0 \
     libcairo2 \
